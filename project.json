@@ -1,0 +1,26 @@
+{
+  "overview": "VE YRON is a luxury activewear e-commerce brand from India. The site delivers a premium Nike/Adidas/Puma-level shopping experience for trackpants and shorts, with separate sections for Mens, Womens, and Plus Sizes. Products are powered live by Shopify, with a mobile-first responsive design, mock OTP login, and a seamless checkout flow.",
+  "features": [
+    "Mens / Womens / Plus Sizes separate category tabs",
+    "Live Shopify product catalog with images, prices, and variants",
+    "Mock OTP login with phone number for easy access",
+    "Mobile-first luxury design matching top sportswear brands",
+    "Swipeable product image gallery with thumbnails",
+    "Persistent cart with sliding drawer",
+    "Checkout with auto-fill to Shopify payment page",
+    "Dynamic dark/light theme matching device preference",
+    "Order confirmation with delivery estimate and return policy",
+    "Contact page with support email and policy sections"
+  ],
+  "category": "ecommerce",
+  "tags": [
+    "ecommerce",
+    "fashion",
+    "luxury",
+    "activewear",
+    "shopify",
+    "mobile-first",
+    "india"
+  ],
+  "last_updated": "2026-05-07T19:23:11.203Z"
+}

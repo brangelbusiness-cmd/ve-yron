@@ -1,0 +1,62 @@
+type ShippingAddress = 
+ record {
+   address: text;
+   city: text;
+   name: text;
+   phone: text;
+   pincode: text;
+   state: text;
+ };
+type ProductVariant = 
+ record {
+   availableForSale: bool;
+   color: text;
+   id: text;
+   price: MoneyV2;
+   size: text;
+   title: text;
+ };
+type ProductImage = 
+ record {
+   altText: text;
+   url: text;
+ };
+type Product = 
+ record {
+   collections: vec text;
+   description: text;
+   featuredImage: ProductImage;
+   handle: text;
+   id: text;
+   images: vec ProductImage;
+   tags: vec text;
+   title: text;
+   variants: vec ProductVariant;
+ };
+type OrderDetails = 
+ record {
+   items: vec CartItem;
+   orderNumber: text;
+   shippingAddress: ShippingAddress;
+   totalAmount: float64;
+ };
+type MoneyV2 = 
+ record {
+   amount: text;
+   currencyCode: text;
+ };
+type CartItem = 
+ record {
+   price: MoneyV2;
+   productId: text;
+   quantity: nat;
+   variantId: text;
+ };
+service : {
+  buildCheckoutUrl: (cartItems: vec CartItem) -> (text) query;
+  createOrder: (order: OrderDetails) -> (text);
+  getOrders: () -> (vec OrderDetails) query;
+  getProductByHandle: (handle: text) -> (opt Product) query;
+  getProducts: () -> (vec Product) query;
+  getProductsByCollection: (collection: text) -> (vec Product) query;
+}

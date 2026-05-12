@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "Satoshi";
+    --font-mono: "JetBrains Mono";
+    --radius: 0.5rem;
+
+    --background: 0.98 0 0;
+    --foreground: 0.08 0 0;
+    --card: 0.94 0 0;
+    --card-foreground: 0.08 0 0;
+    --popover: 0.94 0 0;
+    --popover-foreground: 0.08 0 0;
+
+    --primary: 0.72 0.18 47;
+    --primary-foreground: 0.98 0 0;
+
+    --secondary: 0.88 0.08 70;
+    --secondary-foreground: 0.08 0 0;
+    --muted: 0.9 0 0;
+    --muted-foreground: 0.5 0 0;
+
+    --accent: 0.72 0.18 47;
+    --accent-foreground: 0.98 0 0;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.85 0 0;
+    --input: 0.94 0 0;
+    --ring: 0.72 0.18 47;
+
+    --chart-1: 0.65 0.22 40;
+    --chart-2: 0.6 0.12 185;
+    --chart-3: 0.4 0.07 227;
+    --chart-4: 0.83 0.19 84;
+    --chart-5: 0.77 0.19 70;
+
+    --success: 0.7 0.18 132;
+    --success-foreground: 0.98 0 0;
+
+    --sidebar: 0.98 0 0;
+    --sidebar-foreground: 0.08 0 0;
+    --sidebar-primary: 0.72 0.18 47;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.88 0.08 70;
+    --sidebar-accent-foreground: 0.08 0 0;
+    --sidebar-border: 0.85 0 0;
+    --sidebar-ring: 0.72 0.18 47;
+  }
+
+  .dark {
+    --background: 0.08 0 0;
+    --foreground: 0.96 0 0;
+    --card: 0.14 0 0;
+    --card-foreground: 0.96 0 0;
+    --popover: 0.16 0 0;
+    --popover-foreground: 0.96 0 0;
+
+    --primary: 0.8 0.2 47;
+    --primary-foreground: 0.08 0 0;
+
+    --secondary: 0.3 0.06 70;
+    --secondary-foreground: 0.9 0 0;
+    --muted: 0.24 0 0;
+    --muted-foreground: 0.6 0 0;
+
+    --accent: 0.8 0.2 47;
+    --accent-foreground: 0.08 0 0;
+
+    --destructive: 0.65 0.19 22;
+    --destructive-foreground: 0.96 0 0;
+
+    --border: 0.22 0 0;
+    --input: 0.16 0 0;
+    --ring: 0.8 0.2 47;
+
+    --chart-1: 0.49 0.24 264;
+    --chart-2: 0.7 0.17 162;
+    --chart-3: 0.77 0.19 70;
+    --chart-4: 0.63 0.27 304;
+    --chart-5: 0.65 0.25 16;
+
+    --success: 0.75 0.2 132;
+    --success-foreground: 0.08 0 0;
+
+    --sidebar: 0.14 0 0;
+    --sidebar-foreground: 0.96 0 0;
+    --sidebar-primary: 0.8 0.2 47;
+    --sidebar-primary-foreground: 0.08 0 0;
+    --sidebar-accent: 0.3 0.06 70;
+    --sidebar-accent-foreground: 0.9 0 0;
+    --sidebar-border: 0.22 0 0;
+    --sidebar-ring: 0.8 0.2 47;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .text-uppercase-tight {
+    @apply uppercase tracking-widest text-xs font-semibold;
+  }
+
+  .card-elevated {
+    @apply bg-card border border-border transition-smooth hover:border-primary;
+  }
+
+  .btn-luxury {
+    @apply bg-primary text-primary-foreground px-6 py-4 rounded-sm font-bold uppercase tracking-widest text-xs transition-smooth hover:opacity-90 active:scale-95;
+  }
+
+  .outline-btn {
+    @apply border border-border text-foreground px-6 py-4 rounded-sm font-bold uppercase tracking-widest text-xs transition-smooth hover:bg-muted active:scale-95;
+  }
+
+  .tag-pill {
+    @apply inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest bg-muted text-muted-foreground;
+  }
+
+  .hero-text {
+    @apply font-display font-black uppercase tracking-tight leading-none;
+  }
+
+  .form-label {
+    @apply text-uppercase-tight text-muted-foreground mb-2 block;
+  }
+
+  .form-input {
+    @apply bg-background border border-border text-foreground px-4 py-3 rounded-sm transition-smooth focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  .form-input:disabled {
+    @apply bg-muted text-muted-foreground cursor-not-allowed;
+  }
+
+  .btn-success {
+    @apply bg-success text-success-foreground px-6 py-3 rounded-sm font-bold uppercase tracking-widest text-xs transition-smooth hover:opacity-90 active:scale-95;
+  }
+
+  .order-summary-card {
+    @apply bg-card border border-border rounded-md p-6 shadow-md;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-2 text-uppercase-tight px-3 py-1 rounded-md bg-success/10 text-success;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none !important;
+    }
+  }
+
+  .shadow-elevated {
+    @apply shadow-lg;
+  }
+
+  .transition-fast {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .text-hero {
+    @apply text-5xl md:text-7xl font-display font-bold tracking-tight leading-tight;
+  }
+
+  .product-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8;
+  }
+
+  .product-image-container {
+    @apply w-full aspect-square overflow-hidden;
+    background-color: oklch(var(--muted));
+  }
+
+  .product-image {
+    @apply w-full h-full object-cover;
+  }
+
+  /* ─── Hero: Pure CSS gradient — dark mode — ───────────────────────────── */
+  .hero-gradient-bg {
+    background: linear-gradient(
+      160deg,
+      #0a0a0a 0%,
+      #111111 40%,
+      #0d0d0d 70%,
+      #0a0a0a 100%
+    );
+  }
+
+  .hero-text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #e8e0d0 50%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-text-outline {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px #d4af37;
+    opacity: 0.85;
+  }
+
+  .hero-subtitle {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .hero-btn-secondary {
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+  }
+
+  .hero-scroll-text {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-label {
+    color: oklch(var(--primary));
+  }
+
+  /* Light mode hero overrides */
+  :root:not(.dark) .hero-gradient-bg {
+    background: linear-gradient(
+      160deg,
+      #0f0f0f 0%,
+      #1a1a1a 40%,
+      #111111 70%,
+      #0d0d0d 100%
+    );
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,35 @@
+// Version: 1.0.0
+type CartItem__560037112 =
+  {
+    price : MoneyV2__86863481;
+    productId : Text;
+    quantity : Nat;
+    variantId : Text
+  };
+type MoneyV2__86863481 = {amount : Text; currencyCode : Text};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type OrderDetails__833950521 =
+  {
+    items : [CartItem__560037112];
+    orderNumber : Text;
+    shippingAddress : ShippingAddress__264163135;
+    totalAmount : Float
+  };
+type ShippingAddress__264163135 =
+  {
+    address : Text;
+    city : Text;
+    name : Text;
+    phone : Text;
+    pincode : Text;
+    state : Text
+  };
+actor {
+  stable orders :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?OrderDetails__833950521]];
+      var elementIndex : Nat__490723111
+    }
+};

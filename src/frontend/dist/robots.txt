@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Private routes
+Disallow: /checkout
+Disallow: /order-confirmation
+Disallow: /login
+
+# Sitemap
+Sitemap: https://veyron.in/sitemap.xml
