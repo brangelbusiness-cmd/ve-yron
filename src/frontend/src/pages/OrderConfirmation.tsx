@@ -274,7 +274,8 @@ export default function OrderConfirmation() {
      FULL ORDER VIEW
   ────────────────────────────────────────────────────────────── */
   const addr = order.shippingAddress;
-  const deliveryDate = addBusinessDays(order.createdAt, 5);
+  const deliveryDateEarly = addBusinessDays(order.createdAt, 5);
+  const deliveryDateLate = addBusinessDays(order.createdAt, 7);
 
   return (
     <div
@@ -316,6 +317,13 @@ export default function OrderConfirmation() {
           <p className="text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed">
             Thank you for your purchase. Your order is confirmed.
           </p>
+          <div className="mt-4 inline-flex items-center gap-2 bg-success/10 border border-success/20 text-success text-xs px-4 py-2.5 rounded-full">
+            <CheckCircle2 size={13} />
+            <span>
+              Your order has been placed successfully. You will receive an SMS
+              confirmation shortly.
+            </span>
+          </div>
         </motion.div>
 
         {/* ── 2. ORDER DETAILS CARD ── */}
@@ -357,7 +365,7 @@ export default function OrderConfirmation() {
                 Estimated Delivery
               </p>
               <p className="text-foreground text-sm font-semibold">
-                Estimated by {deliveryDate}
+                {deliveryDateEarly} – {deliveryDateLate}
               </p>
             </div>
           </div>

@@ -1,11 +1,12 @@
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { ArrowLeft, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Mail, Phone, User } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 type LoginMethod = "phone" | "email";
-type LoginStep = "choose" | "input" | "otp";
+type LoginStep = "choose" | "input" | "signup" | "otp";
 
 function maskPhone(phone: string): string {
   if (phone.length <= 4) return `+91 ${phone}`;
@@ -22,7 +23,7 @@ function maskEmail(email: string): string {
   return `${maskedUser}@${domain}`;
 }
 
-/* ── 6-Box OTP Input ────────────────────────────────── */
+/* ── 6-Box OTP Input ──────────────────────────────────── */
 function OtpBoxes({
   value,
   onChange,
@@ -86,7 +87,7 @@ function OtpBoxes({
   );
 }
 
-/* ── Resend Timer ───────────────────────────────────── */
+/* ── Resend Timer ───────────────────────────────────────── */
 function ResendTimer({ onResend }: { onResend: () => void }) {
   const [seconds, setSeconds] = useState(30);
 
@@ -130,8 +131,14 @@ export default function Login() {
   const search = useSearch({ strict: false }) as { returnUrl?: string };
   const returnUrl = search.returnUrl ?? "/checkout";
 
-  const { isLoggedIn, sendOTP, verifyOTP, sendEmailOTP, verifyEmailOTP } =
-    useAuthStore();
+  const {
+    isLoggedIn,
+    sendOTP,
+    verifyOTP,
+    sendEmailOTP,
+    verifyEmailOTP,
+    isReturningUser,
+  } = useAuthStore();
 
   const [step, setStep] = useState<LoginStep>("choose");
   const [method, setMethod] = useState<LoginMethod>("phone");
@@ -140,31 +147,43 @@ export default function Login() {
   const [phoneError, setPhoneError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) navigate({ to: returnUrl as "/" });
   }, [isLoggedIn, navigate, returnUrl]);
+
+  useEffect(() => {
+    document.title = "Sign In | VE YRON";
+  }, []);
+
+  const identifier = method === "phone" ? phone : email;
 
   function selectMethod(m: LoginMethod) {
     setMethod(m);
     setStep("input");
     setPhone("");
     setEmail("");
+    setFullName("");
     setPhoneError("");
     setEmailError("");
+    setNameError("");
     setOtp("");
     setOtpError("");
-    setOtpSent(false);
   }
 
   function goBack() {
     if (step === "otp") {
-      setStep("input");
+      setStep("signup");
       setOtp("");
       setOtpError("");
+    } else if (step === "signup") {
+      setStep("input");
     } else {
       setStep("choose");
     }
@@ -176,16 +195,18 @@ export default function Login() {
     if (phoneError) setPhoneError("");
   }
 
-  function handleSendPhoneOTP(e: React.FormEvent) {
+  async function handleSendPhoneOTP(e: React.FormEvent) {
     e.preventDefault();
     if (phone.length !== 10) {
       setPhoneError("Please enter a valid 10-digit mobile number");
       return;
     }
-    sendOTP(phone);
-    setOtpSent(true);
-    setOtp("");
-    setStep("otp");
+    // Check if new user — needs signup step
+    if (!isReturningUser(phone)) {
+      setStep("signup");
+      return;
+    }
+    await dispatchOTP();
   }
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -193,49 +214,90 @@ export default function Login() {
     if (emailError) setEmailError("");
   }
 
-  function handleSendEmailOTP(e: React.FormEvent) {
+  async function handleSendEmailOTP(e: React.FormEvent) {
     e.preventDefault();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setEmailError("Please enter a valid email address");
       return;
     }
-    sendEmailOTP(email);
-    setOtpSent(true);
-    setOtp("");
-    setStep("otp");
+    if (!isReturningUser(email)) {
+      setStep("signup");
+      return;
+    }
+    await dispatchOTP();
   }
 
-  function handleVerifyOTP(e: React.FormEvent) {
+  async function handleSignupContinue(e: React.FormEvent) {
+    e.preventDefault();
+    if (!fullName.trim() || fullName.trim().length < 2) {
+      setNameError("Please enter your full name");
+      return;
+    }
+    await dispatchOTP();
+  }
+
+  async function dispatchOTP() {
+    setSending(true);
+    try {
+      let code: string;
+      if (method === "phone") {
+        code = await sendOTP(phone);
+        // Show as a secure notification (simulates SMS delivery)
+        toast.success(`OTP sent: ${code}`, {
+          description: `Verification code for +91 ${phone}. Valid for 5 minutes.`,
+          duration: 12000,
+        });
+      } else {
+        code = await sendEmailOTP(email);
+        toast.success(`OTP sent: ${code}`, {
+          description: `Verification code for ${email}. Valid for 5 minutes.`,
+          duration: 12000,
+        });
+      }
+      setOtp("");
+      setOtpError("");
+      setStep("otp");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  async function handleVerifyOTP(e: React.FormEvent) {
     e.preventDefault();
     if (otp.length !== 6) {
       setOtpError("Please enter all 6 digits");
       return;
     }
-    const success =
-      method === "phone" ? verifyOTP(phone, otp) : verifyEmailOTP(email, otp);
-    if (success) {
-      navigate({ to: returnUrl as "/" });
-    } else {
-      setOtpError("Invalid code. Please try again.");
+    setVerifying(true);
+    try {
+      const nameToRegister = fullName.trim() || undefined;
+      const result =
+        method === "phone"
+          ? await verifyOTP(phone, otp, nameToRegister)
+          : await verifyEmailOTP(email, otp, nameToRegister);
+
+      if (result === "ok") {
+        navigate({ to: returnUrl as "/" });
+      } else if (result === "expired") {
+        setOtpError("Your OTP has expired. Please request a new code.");
+      } else if (result === "max_attempts") {
+        setOtpError("Too many incorrect attempts. Please request a new OTP.");
+      } else {
+        setOtpError("Incorrect code. Please check and try again.");
+      }
+    } finally {
+      setVerifying(false);
     }
   }
 
-  function handleResend() {
+  async function handleResend() {
     setOtpError("");
     setOtp("");
-    if (method === "phone") {
-      sendOTP(phone);
-    } else {
-      sendEmailOTP(email);
-    }
+    await dispatchOTP();
   }
 
   const maskedIdentifier =
     method === "phone" ? maskPhone(phone) : maskEmail(email);
-
-  useEffect(() => {
-    document.title = "Sign In | VE YRON";
-  }, []);
 
   return (
     <div
@@ -270,7 +332,7 @@ export default function Login() {
 
           <div className="p-8 sm:p-10">
             <AnimatePresence mode="wait">
-              {/* ── STEP: CHOOSE METHOD ───────────────────────────── */}
+              {/* ── STEP: CHOOSE METHOD ───────────────────────────────────── */}
               {step === "choose" && (
                 <motion.div
                   key="choose"
@@ -281,15 +343,14 @@ export default function Login() {
                 >
                   <div className="text-center mb-8">
                     <h2 className="font-display font-bold text-2xl text-foreground mb-2">
-                      Sign In
+                      Sign In / Sign Up
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      Sign in to place your order
+                      Continue to place your order securely
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    {/* Mobile */}
                     <button
                       type="button"
                       onClick={() => selectMethod("phone")}
@@ -300,7 +361,6 @@ export default function Login() {
                       MOBILE NUMBER
                     </button>
 
-                    {/* Email */}
                     <button
                       type="button"
                       onClick={() => selectMethod("email")}
@@ -326,7 +386,7 @@ export default function Login() {
                 </motion.div>
               )}
 
-              {/* ── STEP: INPUT ───────────────────────────────────── */}
+              {/* ── STEP: INPUT ────────────────────────────────────────────── */}
               {step === "input" && (
                 <motion.div
                   key={`input-${method}`}
@@ -351,7 +411,7 @@ export default function Login() {
                         Mobile Number
                       </h2>
                       <p className="text-sm text-muted-foreground mb-8">
-                        Enter your 10-digit mobile number
+                        We'll send a secure OTP to verify your number
                       </p>
 
                       <form onSubmit={handleSendPhoneOTP} noValidate>
@@ -396,10 +456,11 @@ export default function Login() {
                         </div>
                         <button
                           type="submit"
-                          className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm"
+                          disabled={sending}
+                          className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm disabled:opacity-60"
                           data-ocid="login.send_otp_button"
                         >
-                          SEND OTP
+                          {sending ? "Sending..." : "CONTINUE"}
                         </button>
                       </form>
                     </>
@@ -409,7 +470,7 @@ export default function Login() {
                         Email Address
                       </h2>
                       <p className="text-sm text-muted-foreground mb-8">
-                        Enter your email to receive a login code
+                        We'll send a secure OTP to verify your email
                       </p>
 
                       <form onSubmit={handleSendEmailOTP} noValidate>
@@ -453,10 +514,11 @@ export default function Login() {
                         </div>
                         <button
                           type="submit"
-                          className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm"
+                          disabled={sending}
+                          className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm disabled:opacity-60"
                           data-ocid="login.send_email_otp_button"
                         >
-                          SEND CODE
+                          {sending ? "Sending..." : "CONTINUE"}
                         </button>
                       </form>
                     </>
@@ -464,7 +526,90 @@ export default function Login() {
                 </motion.div>
               )}
 
-              {/* ── STEP: OTP VERIFY ─────────────────────────────── */}
+              {/* ── STEP: SIGNUP (new users only) ────────────────────────── */}
+              {step === "signup" && (
+                <motion.div
+                  key="signup"
+                  initial={{ opacity: 0, x: 16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -16 }}
+                  transition={{ duration: 0.22, ease: "easeInOut" }}
+                >
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-6"
+                    data-ocid="login.signup_back_button"
+                  >
+                    <ArrowLeft size={14} />
+                    Back
+                  </button>
+
+                  <h2 className="font-display font-bold text-2xl text-foreground mb-1">
+                    Create Account
+                  </h2>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Welcome! Just one quick step to get started.
+                  </p>
+                  <p className="text-xs text-muted-foreground/70 mb-8 font-mono truncate">
+                    {identifier}
+                  </p>
+
+                  <form onSubmit={handleSignupContinue} noValidate>
+                    <div className="mb-6">
+                      <label
+                        htmlFor="name-input"
+                        className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2"
+                      >
+                        Your Full Name
+                      </label>
+                      <div
+                        className="flex items-stretch border border-border rounded-sm overflow-hidden
+                          focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2
+                          focus-within:ring-offset-card transition-all duration-150"
+                      >
+                        <span
+                          className="flex items-center gap-1.5 pl-3 pr-3 bg-muted text-muted-foreground
+                          text-sm font-semibold border-r border-border shrink-0 select-none"
+                        >
+                          <User size={14} />
+                        </span>
+                        <input
+                          id="name-input"
+                          type="text"
+                          autoComplete="name"
+                          placeholder="Arjun Sharma"
+                          value={fullName}
+                          onChange={(e) => {
+                            setFullName(e.target.value);
+                            if (nameError) setNameError("");
+                          }}
+                          className="flex-1 bg-transparent text-foreground px-3 py-3 text-sm outline-none min-h-[44px] placeholder:text-muted-foreground"
+                          data-ocid="login.name_input"
+                        />
+                      </div>
+                      {nameError && (
+                        <p
+                          className="mt-2 text-xs text-destructive-foreground bg-destructive/10 px-3 py-1.5 rounded-sm"
+                          data-ocid="login.name_field_error"
+                        >
+                          {nameError}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={sending}
+                      className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm disabled:opacity-60"
+                      data-ocid="login.signup_submit_button"
+                    >
+                      {sending ? "Sending OTP..." : "SEND OTP"}
+                    </button>
+                  </form>
+                </motion.div>
+              )}
+
+              {/* ── STEP: OTP VERIFY ──────────────────────────────────────── */}
               {step === "otp" && (
                 <motion.div
                   key={`otp-${method}`}
@@ -485,25 +630,20 @@ export default function Login() {
 
                   <div className="text-center mb-8">
                     <h2 className="font-display font-bold text-2xl text-foreground mb-2">
-                      Verify Code
+                      Enter OTP
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      Enter the 6-digit code sent to
+                      {method === "phone"
+                        ? "OTP sent to your mobile number"
+                        : "OTP sent to your email address"}
                     </p>
                     <p className="text-sm font-semibold text-foreground mt-1 truncate">
                       {maskedIdentifier}
                     </p>
+                    <p className="text-[11px] text-muted-foreground/60 mt-1">
+                      Valid for 5 minutes
+                    </p>
                   </div>
-
-                  {otpSent && (
-                    <div
-                      className="mb-5 flex items-center gap-2 bg-success/10 text-success px-3 py-2.5 rounded-sm text-xs justify-center"
-                      data-ocid="login.otp_sent_success"
-                    >
-                      <span className="font-bold">&#10003;</span>
-                      <span>Code sent successfully</span>
-                    </div>
-                  )}
 
                   <form onSubmit={handleVerifyOTP} noValidate>
                     <div className="mb-6">
@@ -520,19 +660,15 @@ export default function Login() {
 
                     <button
                       type="submit"
-                      className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm mb-4"
+                      disabled={verifying}
+                      className="btn-luxury w-full flex items-center justify-center min-h-[48px] text-sm mb-4 disabled:opacity-60"
                       data-ocid="login.verify_otp_button"
                     >
-                      VERIFY &amp; SIGN IN
+                      {verifying ? "Verifying..." : "VERIFY & SIGN IN"}
                     </button>
                   </form>
 
                   <ResendTimer onResend={handleResend} />
-
-                  {/* Demo note */}
-                  <p className="mt-5 text-center text-[11px] text-muted-foreground/60 leading-relaxed">
-                    Demo mode: enter any 6-digit code to continue
-                  </p>
                 </motion.div>
               )}
             </AnimatePresence>

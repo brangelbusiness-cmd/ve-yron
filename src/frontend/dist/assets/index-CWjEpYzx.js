@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Home-D8k0_vVO.js","assets/useShopifyProducts-DA3f9_pN.js","assets/shopify-CzRTDa7w.js","assets/proxy-Cno1h6QO.js","assets/arrow-right-DKWrA92a.js","assets/Shop-BcFKfkel.js","assets/badge-e9PJl5DX.js","assets/refresh-cw-teI1veyr.js","assets/ProductDetail-kOGXx_I_.js","assets/shield-Bh5mHz9f.js","assets/truck-C-LscQoT.js","assets/rotate-ccw-CMWWrYJL.js","assets/chevron-right-BgNi98n5.js","assets/Checkout-C1djo8fA.js","assets/order-U0ESaZ9M.js","assets/package-BDhrE1G9.js","assets/OrderConfirmation-CLWx5q3N.js","assets/refresh-ccw-BH02fKlv.js","assets/Contact-UV2zf-NJ.js","assets/Login-Bwvq4q1r.js","assets/arrow-left-B8B3Fy54.js","assets/Policies-uotXyOpp.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Home-B9kwzmEn.js","assets/useShopifyProducts-BJGGr_od.js","assets/shopify-DQa9Hudt.js","assets/proxy-DcnNbM1P.js","assets/arrow-right-D1fLCdgL.js","assets/Shop-BREJuBHh.js","assets/badge-BeJZFUJA.js","assets/refresh-cw-DTNeoaO7.js","assets/ProductDetail-CIA3om7Y.js","assets/shield-D0eLjkBq.js","assets/truck-eT-LpoM9.js","assets/rotate-ccw-CNybCQv1.js","assets/chevron-right-DnhQPKec.js","assets/Checkout-3wvgdf1X.js","assets/order-DQZ1rpXm.js","assets/package-DEJ62Ln1.js","assets/OrderConfirmation-2rhVvi3Z.js","assets/refresh-ccw-D60y2mrt.js","assets/Contact-CQYl4hbU.js","assets/Login-BMB2kWlL.js","assets/arrow-left-BpNdw6op.js","assets/Policies-D-FmXUH7.js"])))=>i.map(i=>d[i]);
 var __defProp = Object.defineProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
@@ -151,7 +151,7 @@ function base32Decode(input) {
   let skip = 0;
   let byte = 0;
   const output = new Uint8Array(input.length * 4 / 3 | 0);
-  let o = 0;
+  let o2 = 0;
   function decodeChar(char) {
     let val = lookupTable[char.toLowerCase()];
     if (val === void 0) {
@@ -161,7 +161,7 @@ function base32Decode(input) {
     byte |= val >>> skip;
     skip += 5;
     if (skip >= 8) {
-      output[o++] = byte;
+      output[o2++] = byte;
       skip -= 8;
       if (skip > 0) {
         byte = val << 5 - skip & 255;
@@ -173,7 +173,7 @@ function base32Decode(input) {
   for (const c of input) {
     decodeChar(c);
   }
-  return output.slice(0, o);
+  return output.slice(0, o2);
 }
 const lookUpTable = new Uint32Array([
   0,
@@ -3324,11 +3324,11 @@ function shallowEqualObjects(a, b) {
 function isPlainArray$1(value) {
   return Array.isArray(value) && value.length === Object.keys(value).length;
 }
-function isPlainObject$1(o) {
-  if (!hasObjectPrototype$1(o)) {
+function isPlainObject$1(o2) {
+  if (!hasObjectPrototype$1(o2)) {
     return false;
   }
-  const ctor = o.constructor;
+  const ctor = o2.constructor;
   if (ctor === void 0) {
     return true;
   }
@@ -3339,13 +3339,13 @@ function isPlainObject$1(o) {
   if (!prot.hasOwnProperty("isPrototypeOf")) {
     return false;
   }
-  if (Object.getPrototypeOf(o) !== Object.prototype) {
+  if (Object.getPrototypeOf(o2) !== Object.prototype) {
     return false;
   }
   return true;
 }
-function hasObjectPrototype$1(o) {
-  return Object.prototype.toString.call(o) === "[object Object]";
+function hasObjectPrototype$1(o2) {
+  return Object.prototype.toString.call(o2) === "[object Object]";
 }
 function sleep(timeout) {
   return new Promise((resolve) => {
@@ -5472,10 +5472,10 @@ react_production.version = "19.1.5";
   react.exports = react_production;
 }
 var reactExports = react.exports;
-const React$4 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const React$5 = /* @__PURE__ */ _mergeNamespaces({
+const o = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const React$4 = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,
-  default: React$4
+  default: o
 }, [reactExports]);
 var QueryClientContext = reactExports.createContext(
   void 0
@@ -7374,6 +7374,7 @@ function checkDCE$1() {
   reactDom.exports = reactDom_production;
 }
 var reactDomExports = reactDom.exports;
+const vt = /* @__PURE__ */ getDefaultExportFromCjs(reactDomExports);
 /**
  * @license React
  * react-dom-client.production.js
@@ -18516,13 +18517,13 @@ function r(e) {
   var t, f, n = "";
   if ("string" == typeof e || "number" == typeof e) n += e;
   else if ("object" == typeof e) if (Array.isArray(e)) {
-    var o = e.length;
-    for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+    var o2 = e.length;
+    for (t = 0; t < o2; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
   } else for (f in e) e[f] && (n && (n += " "), n += f);
   return n;
 }
 function clsx() {
-  for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
+  for (var e, t, f = 0, n = "", o2 = arguments.length; f < o2; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
   return n;
 }
 const CLASS_PART_SEPARATOR = "-";
@@ -21696,25 +21697,25 @@ function replaceEqualDeep(prev, _next) {
   }
   return prevSize === nextSize && equalItems === prevSize ? prev : copy;
 }
-function getEnumerableOwnKeys(o) {
+function getEnumerableOwnKeys(o2) {
   const keys = [];
-  const names = Object.getOwnPropertyNames(o);
+  const names = Object.getOwnPropertyNames(o2);
   for (const name of names) {
-    if (!Object.prototype.propertyIsEnumerable.call(o, name)) return false;
+    if (!Object.prototype.propertyIsEnumerable.call(o2, name)) return false;
     keys.push(name);
   }
-  const symbols = Object.getOwnPropertySymbols(o);
+  const symbols = Object.getOwnPropertySymbols(o2);
   for (const symbol of symbols) {
-    if (!Object.prototype.propertyIsEnumerable.call(o, symbol)) return false;
+    if (!Object.prototype.propertyIsEnumerable.call(o2, symbol)) return false;
     keys.push(symbol);
   }
   return keys;
 }
-function isPlainObject(o) {
-  if (!hasObjectPrototype(o)) {
+function isPlainObject(o2) {
+  if (!hasObjectPrototype(o2)) {
     return false;
   }
-  const ctor = o.constructor;
+  const ctor = o2.constructor;
   if (typeof ctor === "undefined") {
     return true;
   }
@@ -21727,8 +21728,8 @@ function isPlainObject(o) {
   }
   return true;
 }
-function hasObjectPrototype(o) {
-  return Object.prototype.toString.call(o) === "[object Object]";
+function hasObjectPrototype(o2) {
+  return Object.prototype.toString.call(o2) === "[object Object]";
 }
 function isPlainArray(value) {
   return Array.isArray(value) && value.length === Object.keys(value).length;
@@ -24914,10 +24915,10 @@ function ErrorComponent({ error }) {
   ] });
 }
 function ClientOnly({ children, fallback = null }) {
-  return useHydrated() ? /* @__PURE__ */ jsxRuntimeExports.jsx(React$4.Fragment, { children }) : /* @__PURE__ */ jsxRuntimeExports.jsx(React$4.Fragment, { children: fallback });
+  return useHydrated() ? /* @__PURE__ */ jsxRuntimeExports.jsx(o.Fragment, { children }) : /* @__PURE__ */ jsxRuntimeExports.jsx(o.Fragment, { children: fallback });
 }
 function useHydrated() {
-  return React$4.useSyncExternalStore(
+  return o.useSyncExternalStore(
     subscribe,
     () => true,
     () => false
@@ -25601,7 +25602,7 @@ class Route extends BaseRoute {
     this.useNavigate = () => {
       return useNavigate({ from: this.fullPath });
     };
-    this.Link = React$4.forwardRef(
+    this.Link = o.forwardRef(
       (props, ref) => {
         return /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { ref, from: this.fullPath, ...props });
       }
@@ -25655,7 +25656,7 @@ class RootRoute extends BaseRootRoute {
     this.useNavigate = () => {
       return useNavigate({ from: this.fullPath });
     };
-    this.Link = React$4.forwardRef(
+    this.Link = o.forwardRef(
       (props, ref) => {
         return /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { ref, from: this.fullPath, ...props });
       }
@@ -26419,12 +26420,12 @@ const createStoreImpl = (createState) => {
 const createStore = (createState) => createState ? createStoreImpl(createState) : createStoreImpl;
 const identity = (arg) => arg;
 function useStore(api, selector = identity) {
-  const slice = React$4.useSyncExternalStore(
+  const slice = o.useSyncExternalStore(
     api.subscribe,
-    React$4.useCallback(() => selector(api.getState()), [api, selector]),
-    React$4.useCallback(() => selector(api.getInitialState()), [api, selector])
+    o.useCallback(() => selector(api.getState()), [api, selector]),
+    o.useCallback(() => selector(api.getInitialState()), [api, selector])
   );
-  React$4.useDebugValue(slice);
+  o.useDebugValue(slice);
   return slice;
 }
 const createImpl = (createState) => {
@@ -26631,72 +26632,165 @@ const persistImpl = (config, baseOptions) => (set, get, api) => {
   return stateFromStorage || configResult;
 };
 const persist = persistImpl;
+const OTP_EXPIRY_MS = 5 * 60 * 1e3;
+function getRegistry() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("veyron-users") ?? "{}"
+    );
+  } catch {
+    return {};
+  }
+}
+function saveToRegistry(profile) {
+  const reg = getRegistry();
+  reg[profile.identifier] = profile;
+  localStorage.setItem("veyron-users", JSON.stringify(reg));
+}
+function isReturningUser(identifier) {
+  return !!getRegistry()[identifier];
+}
+function getUserName(identifier) {
+  var _a2;
+  return ((_a2 = getRegistry()[identifier]) == null ? void 0 : _a2.name) ?? "";
+}
+async function sha256Hex(text) {
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+function generateOTP() {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return String(1e5 + arr[0] % 9e5);
+}
+function saveOTPSession(session) {
+  sessionStorage.setItem("veyron-otp", JSON.stringify(session));
+}
+function loadOTPSession() {
+  try {
+    const raw = sessionStorage.getItem("veyron-otp");
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+function clearOTPSession() {
+  sessionStorage.removeItem("veyron-otp");
+}
 const useAuthStore = create()(
   persist(
-    (set, get) => ({
+    (set) => ({
       isLoggedIn: false,
       phone: null,
       email: null,
+      name: null,
       loginMethod: null,
-      otpSession: null,
-      sendOTP: (phone) => {
-        const code = Math.floor(1e5 + Math.random() * 9e5).toString();
-        console.info(`[VE YRON] OTP for ${phone}: ${code}`);
-        set({
-          otpSession: {
-            identifier: phone,
-            code,
-            sentAt: Date.now(),
-            type: "phone"
-          }
-        });
+      sendOTP: async (phone) => {
+        const code = generateOTP();
+        const hashedCode = await sha256Hex(code);
+        const session = {
+          identifier: phone,
+          hashedCode,
+          sentAt: Date.now(),
+          type: "phone",
+          attempts: 0
+        };
+        saveOTPSession(session);
+        return code;
       },
-      verifyOTP: (phone, code) => {
-        const session = get().otpSession;
-        const valid = code.length === 6 && /^\d{6}$/.test(code) && (!session || session.identifier === phone);
-        if (valid) {
-          set({
-            isLoggedIn: true,
-            phone,
-            loginMethod: "phone",
-            otpSession: null
-          });
-          return true;
+      verifyOTP: async (phone, code, name) => {
+        const session = loadOTPSession();
+        if (!session || session.identifier !== phone || session.type !== "phone") {
+          return "invalid";
         }
-        return false;
-      },
-      sendEmailOTP: (email) => {
-        const code = Math.floor(1e5 + Math.random() * 9e5).toString();
-        console.info(`[VE YRON] Email OTP for ${email}: ${code}`);
-        set({
-          otpSession: {
-            identifier: email,
-            code,
-            sentAt: Date.now(),
-            type: "email"
-          }
-        });
-      },
-      verifyEmailOTP: (email, code) => {
-        const session = get().otpSession;
-        const valid = code.length === 6 && /^\d{6}$/.test(code) && (!session || session.identifier === email);
-        if (valid) {
-          set({
-            isLoggedIn: true,
-            email,
-            loginMethod: "email",
-            otpSession: null
-          });
-          return true;
+        if (Date.now() - session.sentAt > OTP_EXPIRY_MS) {
+          clearOTPSession();
+          return "expired";
         }
-        return false;
+        if (session.attempts >= 5) {
+          return "max_attempts";
+        }
+        const inputHash = await sha256Hex(code);
+        if (inputHash !== session.hashedCode) {
+          session.attempts += 1;
+          saveOTPSession(session);
+          return "invalid";
+        }
+        const userName = name ?? getUserName(phone);
+        saveToRegistry({
+          name: userName,
+          identifier: phone,
+          type: "phone",
+          createdAt: (/* @__PURE__ */ new Date()).toISOString()
+        });
+        clearOTPSession();
+        set({
+          isLoggedIn: true,
+          phone,
+          name: userName,
+          loginMethod: "phone",
+          email: null
+        });
+        return "ok";
       },
+      sendEmailOTP: async (email) => {
+        const code = generateOTP();
+        const hashedCode = await sha256Hex(code);
+        const session = {
+          identifier: email,
+          hashedCode,
+          sentAt: Date.now(),
+          type: "email",
+          attempts: 0
+        };
+        saveOTPSession(session);
+        return code;
+      },
+      verifyEmailOTP: async (email, code, name) => {
+        const session = loadOTPSession();
+        if (!session || session.identifier !== email || session.type !== "email") {
+          return "invalid";
+        }
+        if (Date.now() - session.sentAt > OTP_EXPIRY_MS) {
+          clearOTPSession();
+          return "expired";
+        }
+        if (session.attempts >= 5) {
+          return "max_attempts";
+        }
+        const inputHash = await sha256Hex(code);
+        if (inputHash !== session.hashedCode) {
+          session.attempts += 1;
+          saveOTPSession(session);
+          return "invalid";
+        }
+        const userName = name ?? getUserName(email);
+        saveToRegistry({
+          name: userName,
+          identifier: email,
+          type: "email",
+          createdAt: (/* @__PURE__ */ new Date()).toISOString()
+        });
+        clearOTPSession();
+        set({
+          isLoggedIn: true,
+          email,
+          name: userName,
+          loginMethod: "email",
+          phone: null
+        });
+        return "ok";
+      },
+      isReturningUser,
+      getUserName,
       logout: () => set({
         isLoggedIn: false,
         phone: null,
         email: null,
-        loginMethod: null,
-        otpSession: null
+        name: null,
+        loginMethod: null
       })
     }),
     {
@@ -26705,6 +26799,7 @@ const useAuthStore = create()(
         isLoggedIn: state.isLoggedIn,
         phone: state.phone,
         email: state.email,
+        name: state.name,
         loginMethod: state.loginMethod
       })
     }
@@ -26893,7 +26988,7 @@ function useComposedRefs(...refs) {
   return reactExports.useCallback(composeRefs(...refs), refs);
 }
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
-var use = React$5[" use ".trim().toString()];
+var use = React$4[" use ".trim().toString()];
 function isPromiseLike(value) {
   return typeof value === "object" && value !== null && "then" in value;
 }
@@ -28323,7 +28418,7 @@ function CartDrawer() {
                   ) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-display font-semibold text-sm text-foreground truncate", children: item.product.title }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-0.5", children: item.variant.selectedOptions.map((o) => o.value).join(" · ") }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-0.5", children: item.variant.selectedOptions.map((o2) => o2.value).join(" · ") }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-sm text-foreground mt-1", children: formatPrice(safeParsePrice(item.variant.price)) }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-3", children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
@@ -28559,7 +28654,7 @@ function Layout({ children }) {
                 {
                   type: "button",
                   className: "md:hidden p-2 text-muted-foreground hover:text-primary transition-colors duration-200 group",
-                  onClick: () => setMobileOpen((o) => !o),
+                  onClick: () => setMobileOpen((o2) => !o2),
                   "aria-label": mobileOpen ? "Close menu" : "Open menu",
                   "data-ocid": "nav.mobile_menu.toggle",
                   children: mobileOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 20, strokeWidth: 1.5 }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-[5px] w-5", children: [
@@ -28942,63 +29037,47 @@ function Layout({ children }) {
           ) }, label)) })
         ] })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t", style: { borderColor: "#141414" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-[1440px] mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex flex-col md:flex-row items-center gap-4 text-[11px]",
-            style: { color: "#333" },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                "© ",
-                (/* @__PURE__ */ new Date()).getFullYear(),
-                " VE YRON. All rights reserved."
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden md:inline", style: { color: "#222" }, children: "|" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "a",
-                {
-                  href: "mailto:brangelbusiness@gmail.com",
-                  "data-ocid": "footer.support_email.link",
-                  className: "flex items-center gap-1.5 hover:text-[#888] transition-colors duration-200",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { size: 11, strokeWidth: 1.5 }),
-                    " brangelbusiness@gmail.com"
-                  ]
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden md:inline", style: { color: "#222" }, children: "|" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Manufacturing and marketed by Brangel Conglomerate, India" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[11px]", style: { color: "#2a2a2a" }, children: [
-          "Built with love using",
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "a",
-            {
-              href: `https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`,
-              target: "_blank",
-              rel: "noopener noreferrer",
-              className: "hover:text-[#666] transition-colors duration-200",
-              children: "caffeine.ai"
-            }
-          )
-        ] })
-      ] }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t", style: { borderColor: "#141414" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-[1440px] mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "flex flex-col md:flex-row items-center gap-4 text-[11px]",
+          style: { color: "#333" },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "© ",
+              (/* @__PURE__ */ new Date()).getFullYear(),
+              " VE YRON. All rights reserved."
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden md:inline", style: { color: "#222" }, children: "|" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "a",
+              {
+                href: "mailto:brangelbusiness@gmail.com",
+                "data-ocid": "footer.support_email.link",
+                className: "flex items-center gap-1.5 hover:text-[#888] transition-colors duration-200",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { size: 11, strokeWidth: 1.5 }),
+                  " brangelbusiness@gmail.com"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden md:inline", style: { color: "#222" }, children: "|" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Manufacturing and marketed by Brangel Conglomerate, India" })
+          ]
+        }
+      ) }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(CartDrawer, {})
   ] });
 }
-const Home = reactExports.lazy(() => __vitePreload(() => import("./Home-D8k0_vVO.js"), true ? __vite__mapDeps([0,1,2,3,4]) : void 0));
-const Shop = reactExports.lazy(() => __vitePreload(() => import("./Shop-BcFKfkel.js"), true ? __vite__mapDeps([5,6,1,2,7,3]) : void 0));
-const ProductDetail = reactExports.lazy(() => __vitePreload(() => import("./ProductDetail-kOGXx_I_.js"), true ? __vite__mapDeps([8,1,2,3,9,10,11,12]) : void 0));
-const Checkout = reactExports.lazy(() => __vitePreload(() => import("./Checkout-C1djo8fA.js"), true ? __vite__mapDeps([13,14,2,12,3,15,11]) : void 0));
-const OrderConfirmation = reactExports.lazy(() => __vitePreload(() => import("./OrderConfirmation-CLWx5q3N.js"), true ? __vite__mapDeps([16,6,14,3,10,17,11]) : void 0));
-const Contact = reactExports.lazy(() => __vitePreload(() => import("./Contact-UV2zf-NJ.js"), true ? __vite__mapDeps([18,3,15,7,10,4]) : void 0));
-const Login = reactExports.lazy(() => __vitePreload(() => import("./Login-Bwvq4q1r.js"), true ? __vite__mapDeps([19,3,20]) : void 0));
-const Policies = reactExports.lazy(() => __vitePreload(() => import("./Policies-uotXyOpp.js"), true ? __vite__mapDeps([21,20,12,10,11,17,15,9]) : void 0));
+const Home = reactExports.lazy(() => __vitePreload(() => import("./Home-B9kwzmEn.js"), true ? __vite__mapDeps([0,1,2,3,4]) : void 0));
+const Shop = reactExports.lazy(() => __vitePreload(() => import("./Shop-BREJuBHh.js"), true ? __vite__mapDeps([5,6,1,2,7,3]) : void 0));
+const ProductDetail = reactExports.lazy(() => __vitePreload(() => import("./ProductDetail-CIA3om7Y.js"), true ? __vite__mapDeps([8,1,2,3,9,10,11,12]) : void 0));
+const Checkout = reactExports.lazy(() => __vitePreload(() => import("./Checkout-3wvgdf1X.js"), true ? __vite__mapDeps([13,14,2,12,3,15,11]) : void 0));
+const OrderConfirmation = reactExports.lazy(() => __vitePreload(() => import("./OrderConfirmation-2rhVvi3Z.js"), true ? __vite__mapDeps([16,6,14,3,10,17,11]) : void 0));
+const Contact = reactExports.lazy(() => __vitePreload(() => import("./Contact-CQYl4hbU.js"), true ? __vite__mapDeps([18,3,15,7,10,4]) : void 0));
+const Login = reactExports.lazy(() => __vitePreload(() => import("./Login-BMB2kWlL.js"), true ? __vite__mapDeps([19,3,20]) : void 0));
+const Policies = reactExports.lazy(() => __vitePreload(() => import("./Policies-D-FmXUH7.js"), true ? __vite__mapDeps([21,20,12,10,11,17,15,9]) : void 0));
 const queryClient$1 = new QueryClient({
   defaultOptions: { queries: { retry: 2, refetchOnWindowFocus: false } }
 });
@@ -29097,9 +29176,12 @@ export {
   cva as K,
   Link as L,
   Minus as M,
+  o as N,
+  vt as O,
   Plus as P,
   Skeleton as S,
   Trash2 as T,
+  User as U,
   X,
   useNavigate as a,
   useParams as b,

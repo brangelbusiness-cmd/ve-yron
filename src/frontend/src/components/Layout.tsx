@@ -630,17 +630,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Manufacturing and marketed by Brangel Conglomerate, India
               </span>
             </div>
-            <p className="text-[11px]" style={{ color: "#2a2a2a" }}>
-              Built with love using{" "}
-              <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#666] transition-colors duration-200"
-              >
-                caffeine.ai
-              </a>
-            </p>
           </div>
         </div>
       </footer>

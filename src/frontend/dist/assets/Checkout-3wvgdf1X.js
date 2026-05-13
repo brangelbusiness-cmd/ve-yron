@@ -1,10 +1,10 @@
-import { c as createLucideIcon, A as create, D as persist, a as useNavigate, d as useCartStore, E as useAuthStore, r as reactExports, j as jsxRuntimeExports, e as ShoppingBag, L as Link, B as Button, F as Separator, T as Trash2 } from "./index-DctbPH3p.js";
-import { u as useOrderStore } from "./order-U0ESaZ9M.js";
-import { c as createShopifyCart } from "./shopify-CzRTDa7w.js";
-import { C as ChevronRight } from "./chevron-right-BgNi98n5.js";
-import { m as motion } from "./proxy-Cno1h6QO.js";
-import { P as Package } from "./package-BDhrE1G9.js";
-import { R as RotateCcw } from "./rotate-ccw-CMWWrYJL.js";
+import { c as createLucideIcon, A as create, D as persist, a as useNavigate, d as useCartStore, E as useAuthStore, r as reactExports, j as jsxRuntimeExports, e as ShoppingBag, L as Link, B as Button, F as Separator, T as Trash2 } from "./index-CWjEpYzx.js";
+import { u as useOrderStore } from "./order-DQZ1rpXm.js";
+import { c as createShopifyCart } from "./shopify-DQa9Hudt.js";
+import { C as ChevronRight } from "./chevron-right-DnhQPKec.js";
+import { m as motion } from "./proxy-DcnNbM1P.js";
+import { P as Package } from "./package-DEJ62Ln1.js";
+import { R as RotateCcw } from "./rotate-ccw-CNybCQv1.js";
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -188,6 +188,7 @@ function Checkout() {
   const [form, setForm] = reactExports.useState(buildInitialForm);
   const [errors, setErrors] = reactExports.useState({});
   const [placing, setPlacing] = reactExports.useState(false);
+  const [redirecting, setRedirecting] = reactExports.useState(false);
   const [checkoutError, setCheckoutError] = reactExports.useState(null);
   const [saveForNext, setSaveForNext] = reactExports.useState(false);
   const update = (field, value) => {
@@ -244,6 +245,7 @@ function Checkout() {
       const fullAddress = form.address2 ? `${form.address}, ${form.address2}` : form.address;
       const buyerIdentity = {
         phone: phoneWithCode,
+        email: form.email || void 0,
         deliveryAddressPreferences: [
           {
             deliveryAddress: {
@@ -275,7 +277,10 @@ function Checkout() {
       });
       const { checkoutUrl } = await createShopifyCart(lines, buyerIdentity);
       clearCart();
-      window.location.href = checkoutUrl;
+      setRedirecting(true);
+      setTimeout(() => {
+        window.location.href = checkoutUrl;
+      }, 1600);
     } catch (err) {
       console.error("[Checkout] Shopify cart creation failed:", err);
       setCheckoutError(
@@ -285,6 +290,33 @@ function Checkout() {
     }
   }
   if (!isLoggedIn) return null;
+  if (redirecting) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-6",
+        "data-ocid": "checkout.redirect_overlay",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-display font-black text-xl tracking-[0.25em] text-primary", children: "VY" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-bold text-xl text-foreground tracking-widest uppercase mb-2", children: "Securing Your Order" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "Redirecting to secure payment gateway…" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1.5", children: [0, 1, 2].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: "w-2 h-2 bg-primary rounded-full animate-bounce",
+                style: { animationDelay: `${i * 0.15}s` }
+              },
+              i
+            )) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-muted-foreground/50 uppercase tracking-widest", children: "256-bit SSL encrypted" })
+        ]
+      }
+    );
+  }
   if (items.length === 0) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
@@ -312,7 +344,7 @@ function Checkout() {
       }
     );
   }
-  const isPlacing = placing;
+  const isPlacing = placing || redirecting;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", "data-ocid": "checkout.page", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-border bg-card", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 py-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "nav",
@@ -448,7 +480,7 @@ function Checkout() {
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-3.5 h-3.5" }),
-              "Secure checkout powered by Shopify"
+              "Secure & encrypted payment"
             ] })
           ] })
         }

@@ -1,4 +1,4 @@
-import { G as safeParsePrice } from "./index-DctbPH3p.js";
+import { G as safeParsePrice } from "./index-CWjEpYzx.js";
 const STORE_DOMAIN = "veyron-9282.myshopify.com";
 const STOREFRONT_TOKEN = "f4fba62fd890ac32c648e6fe38b0dee7";
 const API_VERSION = "2024-01";

@@ -1,10 +1,10 @@
-import { c as createLucideIcon, a as useNavigate, j as jsxRuntimeExports, B as Button, e as ShoppingBag, H as Mail, F as Separator, L as Link } from "./index-DctbPH3p.js";
-import { B as Badge } from "./badge-e9PJl5DX.js";
-import { u as useOrderStore } from "./order-U0ESaZ9M.js";
-import { m as motion } from "./proxy-Cno1h6QO.js";
-import { T as Truck } from "./truck-C-LscQoT.js";
-import { R as RefreshCcw } from "./refresh-ccw-BH02fKlv.js";
-import { R as RotateCcw } from "./rotate-ccw-CMWWrYJL.js";
+import { c as createLucideIcon, a as useNavigate, j as jsxRuntimeExports, B as Button, e as ShoppingBag, H as Mail, F as Separator, L as Link } from "./index-CWjEpYzx.js";
+import { B as Badge } from "./badge-BeJZFUJA.js";
+import { u as useOrderStore } from "./order-DQZ1rpXm.js";
+import { m as motion } from "./proxy-DcnNbM1P.js";
+import { T as Truck } from "./truck-eT-LpoM9.js";
+import { R as RefreshCcw } from "./refresh-ccw-D60y2mrt.js";
+import { R as RotateCcw } from "./rotate-ccw-CNybCQv1.js";
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -277,7 +277,8 @@ function OrderConfirmation() {
     );
   }
   const addr = order.shippingAddress;
-  const deliveryDate = addBusinessDays(order.createdAt, 5);
+  const deliveryDateEarly = addBusinessDays(order.createdAt, 5);
+  const deliveryDateLate = addBusinessDays(order.createdAt, 7);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
@@ -321,7 +322,11 @@ function OrderConfirmation() {
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-display text-4xl md:text-5xl font-bold text-foreground mb-3 uppercase tracking-widest", children: "ORDER CONFIRMED" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed", children: "Thank you for your purchase. Your order is confirmed." })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed", children: "Thank you for your purchase. Your order is confirmed." }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 inline-flex items-center gap-2 bg-success/10 border border-success/20 text-success text-xs px-4 py-2.5 rounded-full", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 13 }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Your order has been placed successfully. You will receive an SMS confirmation shortly." })
+              ] })
             ]
           }
         ),
@@ -359,8 +364,9 @@ function OrderConfirmation() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-uppercase-tight text-success leading-none mb-0.5", children: "Estimated Delivery" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-foreground text-sm font-semibold", children: [
-                    "Estimated by ",
-                    deliveryDate
+                    deliveryDateEarly,
+                    " – ",
+                    deliveryDateLate
                   ] })
                 ] })
               ] }),

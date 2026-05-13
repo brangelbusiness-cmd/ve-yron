@@ -7,8 +7,8 @@ var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot
 var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 var _client, _currentQuery, _currentQueryInitialState, _currentResult, _currentResultState, _currentResultOptions, _currentThenable, _selectError, _selectFn, _selectResult, _lastQueryWithDefinedData, _staleTimeoutId, _refetchIntervalId, _currentRefetchInterval, _trackedProps, _QueryObserver_instances, executeFetch_fn, updateStaleTimeout_fn, computeRefetchInterval_fn, updateRefetchInterval_fn, updateTimers_fn, clearStaleTimeout_fn, clearRefetchInterval_fn, updateQuery_fn, notify_fn, _a;
-import { h as Subscribable, p as pendingThenable, i as resolveEnabled, s as shallowEqualObjects, k as resolveStaleTime, n as noop, l as environmentManager, m as isValidTimeout, t as timeUntilStale, o as timeoutManager, q as focusManager, v as fetchState, w as replaceData, x as notifyManager, r as reactExports, y as shouldThrowError, z as useQueryClient, g as getProductPrice, j as jsxRuntimeExports, L as Link, f as formatPrice } from "./index-DctbPH3p.js";
-import { f as fetchAllProducts, a as fetchProductsByGender, b as fetchProductByHandle } from "./shopify-CzRTDa7w.js";
+import { h as Subscribable, p as pendingThenable, i as resolveEnabled, s as shallowEqualObjects, k as resolveStaleTime, n as noop, l as environmentManager, m as isValidTimeout, t as timeUntilStale, o as timeoutManager, q as focusManager, v as fetchState, w as replaceData, x as notifyManager, r as reactExports, y as shouldThrowError, z as useQueryClient, g as getProductPrice, j as jsxRuntimeExports, L as Link, f as formatPrice } from "./index-CWjEpYzx.js";
+import { f as fetchAllProducts, a as fetchProductsByGender, b as fetchProductByHandle } from "./shopify-DQa9Hudt.js";
 var QueryObserver = (_a = class extends Subscribable {
   constructor(client, options) {
     super();

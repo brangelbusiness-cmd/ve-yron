@@ -195,6 +195,7 @@ export default function Checkout() {
   const [form, setForm] = useState<CheckoutForm>(buildInitialForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [placing, setPlacing] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [saveForNext, setSaveForNext] = useState(false);
 
@@ -261,6 +262,7 @@ export default function Checkout() {
 
       const buyerIdentity: BuyerIdentity = {
         phone: phoneWithCode,
+        email: form.email || undefined,
         deliveryAddressPreferences: [
           {
             deliveryAddress: {
@@ -295,7 +297,11 @@ export default function Checkout() {
 
       const { checkoutUrl } = await createShopifyCart(lines, buyerIdentity);
       clearCart();
-      window.location.href = checkoutUrl;
+      // Show VE YRON branded transition before redirect
+      setRedirecting(true);
+      setTimeout(() => {
+        window.location.href = checkoutUrl;
+      }, 1600);
     } catch (err) {
       console.error("[Checkout] Shopify cart creation failed:", err);
       setCheckoutError(
@@ -307,6 +313,44 @@ export default function Checkout() {
 
   // Don't render checkout content for unauthenticated users
   if (!isLoggedIn) return null;
+
+  // VE YRON branded payment redirect overlay
+  if (redirecting) {
+    return (
+      <div
+        className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-6"
+        data-ocid="checkout.redirect_overlay"
+      >
+        <div className="flex flex-col items-center gap-5">
+          <div className="w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center">
+            <span className="font-display font-black text-xl tracking-[0.25em] text-primary">
+              VY
+            </span>
+          </div>
+          <div className="text-center">
+            <h2 className="font-display font-bold text-xl text-foreground tracking-widest uppercase mb-2">
+              Securing Your Order
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Redirecting to secure payment gateway…
+            </p>
+          </div>
+          <div className="flex gap-1.5">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              />
+            ))}
+          </div>
+        </div>
+        <p className="text-[11px] text-muted-foreground/50 uppercase tracking-widest">
+          256-bit SSL encrypted
+        </p>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -338,7 +382,7 @@ export default function Checkout() {
     );
   }
 
-  const isPlacing = placing;
+  const isPlacing = placing || redirecting;
 
   return (
     <div className="min-h-screen bg-background" data-ocid="checkout.page">
@@ -501,7 +545,7 @@ export default function Checkout() {
 
               <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Secure checkout powered by Shopify
+                Secure &amp; encrypted payment
               </p>
             </div>
           </motion.aside>

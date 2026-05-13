@@ -1,9 +1,9 @@
-import { c as createLucideIcon, u as useSearch, a as useNavigate, r as reactExports, j as jsxRuntimeExports, B as Button, L as Link, C as ChevronDown, S as Skeleton, f as formatPrice, g as getProductPrice } from "./index-DctbPH3p.js";
-import { B as Badge } from "./badge-e9PJl5DX.js";
-import { c as useAllProducts, S as SEO, P as ProductCard } from "./useShopifyProducts-DA3f9_pN.js";
-import { R as RefreshCw } from "./refresh-cw-teI1veyr.js";
-import { m as motion } from "./proxy-Cno1h6QO.js";
-import "./shopify-CzRTDa7w.js";
+import { c as createLucideIcon, u as useSearch, a as useNavigate, r as reactExports, j as jsxRuntimeExports, B as Button, L as Link, C as ChevronDown, S as Skeleton, f as formatPrice, g as getProductPrice } from "./index-CWjEpYzx.js";
+import { B as Badge } from "./badge-BeJZFUJA.js";
+import { c as useAllProducts, S as SEO, P as ProductCard } from "./useShopifyProducts-BJGGr_od.js";
+import { R as RefreshCw } from "./refresh-cw-DTNeoaO7.js";
+import { m as motion } from "./proxy-DcnNbM1P.js";
+import "./shopify-DQa9Hudt.js";
 /**
  * @license lucide-react v0.511.0 - ISC
  *

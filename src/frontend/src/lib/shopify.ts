@@ -131,6 +131,7 @@ export interface DeliveryAddress {
 
 export interface BuyerIdentity {
   phone?: string;
+  email?: string;
   deliveryAddressPreferences?: { deliveryAddress: DeliveryAddress }[];
 }
 
