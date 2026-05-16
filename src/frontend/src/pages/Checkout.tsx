@@ -171,13 +171,6 @@ export default function Checkout() {
   const clearAddressFn = useAddressStore((s) => s.clearAddress);
   const setOrder = useOrderStore((s) => s.setOrder);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate({ to: "/login", search: { returnUrl: "/checkout" } });
-    }
-  }, [isLoggedIn, navigate]);
-
   const initialSaved = useRef(savedAddress).current;
 
   const buildInitialForm = (): CheckoutForm => ({
@@ -312,7 +305,6 @@ export default function Checkout() {
   }
 
   // Don't render checkout content for unauthenticated users
-  if (!isLoggedIn) return null;
 
   // VE YRON branded payment redirect overlay
   if (redirecting) {
