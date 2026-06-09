@@ -18,8 +18,6 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import type { BuyerIdentity } from "../lib/shopify";
-import { createShopifyCart } from "../lib/shopify";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -242,39 +240,14 @@ export default function Checkout() {
     setCheckoutError(null);
 
     try {
-      const lines = items.map((item) => ({
-        merchandiseId: item.variant.id,
-        quantity: item.quantity,
-      }));
-
-      const { firstName, lastName } = splitName(form.name);
-      const phoneWithCode = `+91${form.phone}`;
+      const orderId = `VY-${Date.now()}`;
       const fullAddress = form.address2
         ? `${form.address}, ${form.address2}`
         : form.address;
 
-      const buyerIdentity: BuyerIdentity = {
-        phone: phoneWithCode,
-        email: form.email || undefined,
-        deliveryAddressPreferences: [
-          {
-            deliveryAddress: {
-              firstName,
-              lastName,
-              address1: fullAddress,
-              city: form.city,
-              province: form.state,
-              zip: form.pincode,
-              country: "IN",
-              phone: phoneWithCode,
-            },
-          },
-        ],
-      };
-
       // Store order details for confirmation page
       setOrder({
-        orderNumber: `VY-${Date.now()}`,
+        orderNumber: orderId,
         items,
         shippingAddress: {
           name: form.name,
@@ -288,23 +261,47 @@ export default function Checkout() {
         createdAt: new Date().toISOString(),
       });
 
-      const { checkoutUrl } = await createShopifyCart(lines, buyerIdentity);
+      // Create Cashfree payment session via our secure API
+      const sessionRes = await fetch("/api/cashfree-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId,
+          amount: totalPrice,
+          customerName: form.name,
+          customerEmail: form.email,
+          customerPhone: form.phone,
+          returnUrl: `${window.location.origin}/order-confirmation?order_id=${orderId}`,
+        }),
+      });
+
+      const sessionData = await sessionRes.json();
+
+      if (!sessionRes.ok) {
+        throw new Error(sessionData.error || "Failed to create payment session");
+      }
+
+      // Load Cashfree JS SDK and open payment
+      const { load } = await import("@cashfreepayments/cashfree-js");
+      const cashfree = await load({ mode: "production" });
+
       clearCart();
-      // Show VE YRON branded transition before redirect
       setRedirecting(true);
-      setTimeout(() => {
-        window.location.href = checkoutUrl;
-      }, 1600);
+
+      cashfree.checkout({
+        paymentSessionId: sessionData.paymentSessionId,
+        redirectTarget: "_self",
+      });
+
     } catch (err) {
-      console.error("[Checkout] Shopify cart creation failed:", err);
+      console.error("[Checkout] Cashfree payment failed:", err);
       setCheckoutError(
-        "Unable to create checkout session. Please check your details and try again.",
+        "Unable to initiate payment. Please check your details and try again.",
       );
       setPlacing(false);
+      setRedirecting(false);
     }
   }
-
-  // Don't render checkout content for unauthenticated users
 
   // VE YRON branded payment redirect overlay
   if (redirecting) {
@@ -831,7 +828,7 @@ export default function Checkout() {
                   className="mt-4 p-4 border border-destructive/30 bg-destructive/10 text-destructive text-sm rounded-sm"
                   data-ocid="checkout.error_state"
                 >
-                  Unable to create checkout. Please try again.
+                  Unable to initiate payment. Please try again.
                 </div>
               )}
 
